@@ -23,7 +23,7 @@ All in `scripts/`. Pure Python except `bp_fold.py`, `bp_thick.py`, `bp_unfold.py
 | `tree.py spec.json` | writes a tree spec: cone trunk, cone branches, `leaf_cards` |
 | `template.py draw layout.json DIR` | `template.png` (guide for the painter) and `mask.png` |
 | `image.py edit painted.png "prompt" template.png --transparent` | the paid call: paints the dieline (`--dry-run` first) |
-| `template.py clean layout.json painted.png texture.png --review RD` | fits, cleans, bleeds, writes `RD/checks/papercraft.json` |
+| `template.py clean layout.json painted.png texture.png --review RD` | fits, erases painted fold lines, cleans, bleeds, writes `RD/checks/papercraft.json` |
 | `leaves.py leaf_sheet.png leaves.json` | one convex card per leaf blob |
 | `holes.py layout.json texture.png` | outlines of alpha holes in thick see-through nets, so they get rims too |
 | `run_fold.py -- A [review/NN]` | headless fold: `export/<name>.glb` (WEBP), `build/<name>.blend`, 4 review views, `export/<name>_fold.glb` |
@@ -138,7 +138,11 @@ profile builds and checks in a second.
 - `glb_check.py`: the static GLB has WEBP images, the `_fold` GLB has morph targets and one clip `Fold`.
 - Look at the four review views before calling it done.
 
-## Lessons (crate, window, table, tree, then a steampunk batch, 2026-11-01)
+## Lessons
+
+- The painter keeps the dark fold lines of the template even when told not to. `clean` repaints a 7 px band
+  along every face edge from its surroundings (inpainting), so no line shows on the folded mesh. `--keep-lines`
+  keeps them (a cartoon outline look). (crate, window, table, tree, then a steampunk batch, 2026-11-01)
 
 - The painter keeps shapes but not scale: the crate cross came back 15 percent taller (IoU 0.57), the window
   square instead of 1.0 x 1.3. `clean` fits the painted box onto the template per axis: IoU 0.98 to 1.0. Never skip it.

@@ -103,6 +103,12 @@ swatches instead (brass, walnut, steel), and `swatch.py` placed them on each pie
 extruded profiles, barrel, band and ramrod are cylinders, the trigger guard is a loop cut in a `thick` card.
 ![flintlock](docs/images/flintlock.png)
 
+## No fold lines
+
+The painter tends to keep the dark fold lines of the template. `template.py clean` repaints a thin band along every
+face edge from the colours around it, so the folded object shows no seam lines. Pass `--keep-lines` for an outlined
+cartoon look.
+
 ## Characters
 
 Rounded low-poly characters work too. A head is three frustums along the view axis: a front bevel with the face on

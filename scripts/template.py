@@ -4,7 +4,7 @@
     template.py clean layout.json painted.png OUT.png [--review RD]
 
 draw: nets as light grey faces with dark fold lines and small labels, transparent outside. The painter (an image
-edit) fills the faces. clean: resize the painted image to the atlas, force alpha inside opaque nets, cut alpha
+edit) fills the faces. clean: resize the painted image to the atlas, erase painted fold lines, force alpha inside opaque nets, cut alpha
 outside every net, then bleed edge colours into the padding so mipmaps show no seams. With --review RD it writes
 RD/checks/papercraft.json: the metrics and a pass flag (iou_fit >= 0.9 and coverage_pct >= 85).
 """
@@ -110,7 +110,24 @@ def fit(rgba, inside):
     return warped if _iou(warped[..., 3], inside) > _iou(rgba[..., 3], inside) else rgba
 
 
-def clean(lay, painted, out, review=None):
+def erase_lines(rgb, lay, inside, width=7):
+    """The painter often keeps the dark fold lines of the template. Repaint a thin band along every face edge from
+    the colours around it, so no line shows on the folded mesh. Pixels just outside the nets join the mask, so an
+    outer edge is filled from inside the face, not from the background."""
+    n = lay["atlas_px"]
+    band = Image.new("L", (n, n), 0)
+    d = ImageDraw.Draw(band)
+    for net in lay["nets"].values():
+        for f in net["faces"]:
+            pts = [_px(uv, n) for uv in f["uv"]]
+            d.line(pts + pts[:1], fill=255, width=width)
+    band = np.array(band) > 0
+    near = cv2.dilate(inside.astype(np.uint8), np.ones((width + 4, width + 4), np.uint8)) > 0
+    mask = ((band & inside) | (near & ~inside)).astype(np.uint8) * 255
+    return cv2.inpaint(np.ascontiguousarray(rgb), mask, width, cv2.INPAINT_TELEA)
+
+
+def clean(lay, painted, out, review=None, lines=False):
     n = lay["atlas_px"]
     src = Image.open(painted).convert("RGBA").resize((n, n), Image.LANCZOS)
     m, o = masks(lay)
@@ -124,6 +141,8 @@ def clean(lay, painted, out, review=None):
     holes = (solid & (a < 128)).astype(np.uint8) * 255
     if holes.any():                              # gaps the painter left in solid faces: fill from the neighbours
         rgba[..., :3] = cv2.inpaint(np.ascontiguousarray(rgba[..., :3]), holes, 7, cv2.INPAINT_TELEA)
+    if not lines:
+        rgba[..., :3] = erase_lines(rgba[..., :3], lay, inside)
     a[solid] = 255
     a[~inside] = 0
     # bleed: every pixel outside the nets takes the colour of the nearest pixel inside them
@@ -156,9 +175,10 @@ if __name__ == "__main__":
     ap.add_argument("layout")
     ap.add_argument("args", nargs="+")
     ap.add_argument("--review")
+    ap.add_argument("--keep-lines", action="store_true", help="keep painted lines on the face edges")
     a = ap.parse_args()
     lay = json.load(open(a.layout))
     if a.cmd == "draw":
         print(draw(lay, a.args[0]))
     else:
-        print(json.dumps(clean(lay, a.args[0], a.args[1], a.review)))
+        print(json.dumps(clean(lay, a.args[0], a.args[1], a.review, a.keep_lines)))

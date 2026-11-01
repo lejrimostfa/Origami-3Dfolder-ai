@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+*.blend1
+.DS_Store
+# local outputs of run_fold.py and template.py: rebuilt on demand
+build/
+review/
+template.png
+mask.png

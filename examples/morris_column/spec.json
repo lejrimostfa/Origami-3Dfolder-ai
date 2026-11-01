@@ -1,0 +1,90 @@
+{
+ "name": "morris_column",
+ "opaque": true,
+ "nets": {
+  "base": {
+   "type": "frustum",
+   "r0": 0.64,
+   "r1": 0.58,
+   "h": 0.25,
+   "seg": 20
+  },
+  "shaft": {
+   "type": "frustum",
+   "r0": 0.55,
+   "r1": 0.55,
+   "h": 2.3,
+   "seg": 20
+  },
+  "cornice": {
+   "type": "frustum",
+   "r0": 0.68,
+   "r1": 0.56,
+   "h": 0.16,
+   "seg": 20
+  },
+  "dome": {
+   "type": "frustum",
+   "r0": 0.68,
+   "r1": 0.24,
+   "h": 0.45,
+   "seg": 20
+  },
+  "finial": {
+   "type": "frustum",
+   "r0": 0.24,
+   "r1": 0.0,
+   "h": 0.4,
+   "seg": 12
+  }
+ },
+ "parts": [
+  {
+   "net": "base",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "shaft",
+   "at": [
+    0,
+    0,
+    0.25
+   ]
+  },
+  {
+   "net": "cornice",
+   "at": [
+    0,
+    0,
+    2.71
+   ],
+   "rot": [
+    180,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "dome",
+   "at": [
+    0,
+    0,
+    2.71
+   ]
+  },
+  {
+   "net": "finial",
+   "at": [
+    0,
+    0,
+    3.16
+   ]
+  }
+ ],
+ "atlas_px": 1024,
+ "pad_px": 10
+}

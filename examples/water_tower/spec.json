@@ -1,0 +1,125 @@
+{
+ "name": "water_tower",
+ "opaque": true,
+ "nets": {
+  "tank": {
+   "type": "frustum",
+   "r0": 0.95,
+   "r1": 0.95,
+   "h": 1.7,
+   "seg": 20,
+   "cap": "both"
+  },
+  "roof": {
+   "type": "frustum",
+   "r0": 1.08,
+   "r1": 0.0,
+   "h": 0.65,
+   "seg": 20
+  },
+  "leg": {
+   "type": "box",
+   "size": [
+    0.12,
+    0.12,
+    1.1
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back"
+   ]
+  },
+  "platform": {
+   "type": "box",
+   "size": [
+    1.6,
+    1.6,
+    0.1
+   ]
+  },
+  "ladder": {
+   "type": "card",
+   "size": [
+    0.42,
+    2.5
+   ],
+   "double": true,
+   "opaque": false
+  }
+ },
+ "parts": [
+  {
+   "net": "leg",
+   "at": [
+    -0.62,
+    -0.62,
+    0
+   ]
+  },
+  {
+   "net": "leg",
+   "at": [
+    -0.62,
+    0.62,
+    0
+   ]
+  },
+  {
+   "net": "leg",
+   "at": [
+    0.62,
+    -0.62,
+    0
+   ]
+  },
+  {
+   "net": "leg",
+   "at": [
+    0.62,
+    0.62,
+    0
+   ]
+  },
+  {
+   "net": "platform",
+   "at": [
+    0,
+    0,
+    1.1
+   ]
+  },
+  {
+   "net": "tank",
+   "at": [
+    0,
+    0,
+    1.2
+   ]
+  },
+  {
+   "net": "roof",
+   "at": [
+    0,
+    0,
+    2.9
+   ]
+  },
+  {
+   "net": "ladder",
+   "at": [
+    0.35,
+    -0.97,
+    0.0
+   ],
+   "rot": [
+    -8,
+    0,
+    0
+   ]
+  }
+ ],
+ "atlas_px": 1024,
+ "pad_px": 10
+}

@@ -1,0 +1,25 @@
+{
+ "name": "crate",
+ "atlas_px": 1024,
+ "pad_px": 12,
+ "nets": {
+  "crate": {
+   "type": "box",
+   "size": [
+    0.6,
+    0.6,
+    0.6
+   ]
+  }
+ },
+ "parts": [
+  {
+   "net": "crate",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

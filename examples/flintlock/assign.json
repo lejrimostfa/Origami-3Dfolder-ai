@@ -1,0 +1,94 @@
+{
+ "boxes": {
+  "brass": [
+   22,
+   135,
+   327,
+   492
+  ],
+  "walnut": [
+   358,
+   135,
+   664,
+   492
+  ],
+  "steel": [
+   696,
+   135,
+   1002,
+   492
+  ],
+  "copper": [
+   22,
+   525,
+   327,
+   872
+  ],
+  "dial": [
+   372,
+   540,
+   650,
+   828
+  ],
+  "gears": [
+   696,
+   525,
+   1002,
+   872
+  ]
+ },
+ "nets": {
+  "stock": {
+   "box": "walnut",
+   "mode": "tile",
+   "m": 0.05
+  },
+  "buttcap": {
+   "box": "brass",
+   "mode": "tile",
+   "m": 0.04
+  },
+  "lockplate": {
+   "box": "gears",
+   "mode": "face"
+  },
+  "lockplate/side": {
+   "box": "steel",
+   "mode": "tile",
+   "m": 0.03
+  },
+  "hammer": {
+   "box": "steel",
+   "mode": "tile",
+   "m": 0.03
+  },
+  "frizzen": {
+   "box": "steel",
+   "mode": "tile",
+   "m": 0.03
+  },
+  "barrel": {
+   "box": "steel",
+   "mode": "fit"
+  },
+  "barrel/cap": {
+   "box": "gears",
+   "mode": "face"
+  },
+  "band": {
+   "box": "brass",
+   "mode": "tile",
+   "m": 0.03
+  },
+  "ramrod": {
+   "box": "steel",
+   "mode": "fit"
+  },
+  "guard": {
+   "box": "brass",
+   "mode": "tile",
+   "m": 0.04,
+   "shape": "loop"
+  }
+ }
+}

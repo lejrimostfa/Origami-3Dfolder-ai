@@ -4,11 +4,11 @@ Papercraft 3D assets for games, as a Claude Code skill. A simple shape is unfold
 model paints the dieline. Blender folds it back into a textured low-poly GLB. A second GLB shows the flat sheet
 folding into the object (morph targets, one clip `Fold`).
 
-![The eight example objects, folded](docs/images/hero.png)
+![The nine example objects, folded](docs/images/hero.png)
 
 ![demo](docs/demo.gif)
 
-[Demo video](docs/demo.mp4)
+[Demo video](docs/demo.mp4), [vertical version](docs/demo_vertical.mp4)
 
 What you get per object:
 - `export/<name>.glb`: low-poly mesh, one atlas, WEBP texture, +Y up, ready for Three.js. 25 to 420 KB.
@@ -67,13 +67,13 @@ same texel density. Trees come from `tree.py`: a cone trunk, cone branches and l
 
 ## Examples
 
-`examples/` holds eight finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
+`examples/` holds nine finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
 GLBs. Each image below shows the dieline sent to the painter, the painting that came back, and the folded object.
 
 Crate: one box, cross net.
 ![crate](docs/images/crate.png)
 
-Window: a double card, panes cut out by alpha.
+Window: one card with a 6 cm `thick` frame, panes cut out by alpha.
 ![window](docs/images/window.png)
 
 Table: a tray net top and one leg net placed four times.
@@ -88,11 +88,16 @@ Morris column: five frustums. The cornice is a frustum turned upside down.
 Market stall: boxes and an extruded gable awning.
 ![market stall](docs/images/market_stall.png)
 
-Handcart: boxes, an axle, wheels as short cylinders with both caps.
+Handcart: an open box with 2.5 cm `thick` plank walls, an axle, wheels as short cylinders with both caps.
 ![handcart](docs/images/handcart.png)
 
-Water tower: a capped cylinder tank, a cone roof, box legs and a card ladder.
+Water tower: a capped cylinder tank, a cone roof, box legs and a `thick` card ladder.
 ![water tower](docs/images/water_tower.png)
+
+Flintlock: the image model refused to paint a pistol dieline. So it painted a sheet of plain material
+swatches instead (brass, walnut, steel), and `swatch.py` placed them on each piece by code. Stock and lock are
+extruded profiles, barrel, band and ramrod are cylinders, the trigger guard is a loop cut in a `thick` card.
+![flintlock](docs/images/flintlock.png)
 
 ## Fold animation
 

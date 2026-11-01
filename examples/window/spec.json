@@ -10,7 +10,8 @@
     1.0,
     1.3
    ],
-   "double": true
+   "double": false,
+   "thick": 0.06
   }
  },
  "parts": [

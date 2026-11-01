@@ -56,9 +56,13 @@ def fold_anim(m, frames=72, hold=12, steps=16, nets_end=0.8, window=0.5, leaves_
             k = _pc_smooth((t - start[i]) / (window * nets_end))
             poses[i] = (_pc_part_matrix(part, k, i), unfold.net_pose(lay, lay["nets"][part["net"]], k))
         kb = obj.shape_key_add(name=f"Fold{s:02d}", from_mix=False)
-        for vi, (pi, fi, ci) in enumerate(src):
-            mx, pose = poses[pi]
-            kb.data[vi].co = mx @ Vector(pose[fi][ci])
+        for vi, sv in enumerate(src):
+            mx, pose = poses[sv[0]]
+            p = mx @ Vector(pose[sv[1]][sv[2]])
+            if len(sv) == 4:                               # a back vertex of a thick face: inward of its posed face,
+                n = (mx.to_3x3() @ Vector(unfold._normal(pose[sv[1]]))).normalized()   # in metres after scale
+                p -= n * sv[3]
+            kb.data[vi].co = p
         for j, (base, g0) in enumerate(cards):
             vi = len(src) + j
             g = _pc_smooth((t - g0) / 0.15)

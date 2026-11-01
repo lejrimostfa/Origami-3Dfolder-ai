@@ -15,7 +15,8 @@
     "right",
     "back",
     "bottom"
-   ]
+   ],
+   "thick": 0.025
   },
   "wheel": {
    "type": "frustum",

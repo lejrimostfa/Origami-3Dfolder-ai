@@ -52,6 +52,9 @@ Metres, Z up, the front faces -Y. The folder name and `"name"` should match: out
   starts a new piece.
 - `card`: `size` [w, h], vertical quad facing -Y. `"double": true` adds the back. Set `"opaque": false` on the spec
   or the net when the alpha cuts holes (window panes, ladder rungs).
+- Any net: `"thick"` (metres) gives its faces a real thickness, inward, with rims on free edges that show the
+  dieline colour at the boundary. For planks and cards: window frame 0.06, open cart walls 0.025, ladder 0.03.
+  A `double` card does not need its back face once thick. Holes cut by alpha (panes) stay paper thin.
 - One net placed many times shares its pixels (4 legs, 6 branches). Parts take `at`, `rot` (degrees XYZ), `scale`.
 
 ## Steps

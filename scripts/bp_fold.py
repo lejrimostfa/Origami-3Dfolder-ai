@@ -61,9 +61,44 @@ def _pc_matrix(part):
     return Matrix.LocRotScale(Vector(part.get("at", (0, 0, 0))), r, s)
 
 
+def _pc_thicken(bm, uv, made, t, pi, sources):
+    """Give a part's faces a thickness t, inward, so the outside keeps the spec size: a back face per face and a
+    rim along every free edge (an edge no other face of the part shares). The rim takes the uvs of its edge, so it
+    shows the dieline colour at the boundary. made: [(bmface, face index)]. Back verts are recorded in sources
+    as (part, face, corner, t) so the fold animation can follow them."""
+    key = lambda v: tuple(round(c, 5) for c in v.co)
+    count = {}
+    for f, _ in made:
+        for e in f.edges:
+            k = frozenset((key(e.verts[0]), key(e.verts[1])))
+            count[k] = count.get(k, 0) + 1
+    for f, fi in made:
+        n = f.normal.copy()
+        loops = list(f.loops)
+        back = []
+        for ci, l in enumerate(loops):
+            back.append(bm.verts.new(l.vert.co - n * t))
+            if sources is not None:
+                sources.append((pi, fi, ci, t))
+        bf = bm.faces.new(back[::-1])
+        bf.smooth, bf.material_index = f.smooth, f.material_index
+        for loop, src in zip(bf.loops, loops[::-1]):
+            loop[uv].uv = src[uv].uv
+        for i, l in enumerate(loops):
+            j = (i + 1) % len(loops)
+            a, b = l, loops[j]
+            if count[frozenset((key(a.vert), key(b.vert)))] > 1:
+                continue
+            rim = bm.faces.new([b.vert, a.vert, back[i], back[j]])
+            rim.material_index = f.material_index
+            for loop, src in zip(rim.loops, (b, a, a, b)):
+                loop[uv].uv = src[uv].uv
+
+
 def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False):
     """keep_seams: weld only verts that share position AND uv, so cut edges can part (fold animation).
-    It also records m["sources"]: per vertex its (part, face, corner), which bp_unfold.fold_anim reads."""
+    It also records m["sources"]: per vertex its (part, face, corner), which bp_unfold.fold_anim reads.
+    A net with "thick": metres gets a back face and rims (_pc_thicken)."""
     lay = json.load(open(_pc_abs(layout_path)))
     name = name or lay["name"]
     me = bpy.data.meshes.new(f"GEO-{name}")
@@ -75,6 +110,7 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
     for pi, part in enumerate(lay["parts"]):
         net, mx = lay["nets"][part["net"]], _pc_matrix(part)
         smooth = net["type"] == "frustum"
+        faces = []
         if keep_seams:
             shared = {}
             for fi, f in enumerate(net["faces"]):
@@ -92,10 +128,19 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
                 face.smooth = smooth
                 for loop, t in zip(face.loops, f["uv"]):
                     loop[uv].uv = t
+                faces.append((face, fi))
+            if net.get("thick"):
+                bm.normal_update()
+                _pc_thicken(bm, uv, faces, net["thick"], pi, sources)
             continue
         made = []
-        for f in net["faces"]:
-            made += _pc_face(bm, uv, [mx @ Vector(c) for c in f["co"]], f["uv"], smooth)
+        for fi, f in enumerate(net["faces"]):
+            vs = _pc_face(bm, uv, [mx @ Vector(c) for c in f["co"]], f["uv"], smooth)
+            made += vs
+            faces.append((vs[0].link_faces[0], fi))
+        if net.get("thick"):
+            bm.normal_update()
+            _pc_thicken(bm, uv, faces, net["thick"], pi, None)
         bmesh.ops.remove_doubles(bm, verts=made, dist=1e-5)
     bm.to_mesh(me)
     bm.free()

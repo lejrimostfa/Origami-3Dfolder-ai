@@ -45,8 +45,9 @@
     0.42,
     2.5
    ],
-   "double": true,
-   "opaque": false
+   "double": false,
+   "opaque": false,
+   "thick": 0.03
   }
  },
  "parts": [

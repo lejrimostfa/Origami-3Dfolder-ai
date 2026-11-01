@@ -19,6 +19,7 @@ Net types (units are metres, Z up, front is -Y, every face winds outward):
     card     size [w, h], vertical quad facing -Y. "double": true adds the back face (same texture, mirrored).
     extrude  outline [[y, z], ...] (a profile: gable roof, pistol grip), length along X centred on 0. polynet.py.
     poly     verts and faces (wound outward) of any low-poly mesh, unfolded by its shared edges. polynet.py.
+Any net: "thick": metres gives its faces a real thickness, inward, with rims on free edges (planks, cards).
 
 Layout output: per net its polygons (3D verts + UV in 0..1) and per part its placement. One texel density for
 every net, so a leg and a table top share the same detail per metre.
@@ -183,6 +184,8 @@ def layout(spec):
                           "faces": [{"name": n, "co": [list(xyz) for xyz, _ in p],
                                      "uv": [[ox + (u - u0) * scale, oy + (v - v0) * scale] for _, (u, v) in p]}
                                     for n, p in polys]}
+        if spec["nets"][k].get("thick"):                 # bp_fold gives the folded faces this thickness
+            out["nets"][k]["thick"] = spec["nets"][k]["thick"]
     return out
 
 

@@ -61,6 +61,10 @@ The examples already ship `painted.png`, so you can skip the paid call and run t
 Any net takes `"thick"` in metres: its faces get a real thickness, inward so the outside keeps the spec size, with
 rims on the free edges that take the dieline colour at the boundary. Use it where paper looks wrong: a window frame,
 the walls of an open crate or cart, a ladder. Closed boxes already have volume. The fold animation keeps it.
+For a thick net that is not opaque, run `python3 scripts/holes.py layout.json texture.png` before folding: it finds
+the holes the alpha cuts (panes, ladder gaps) and Blender adds rims around them too, so a frame reads solid.
+
+![flat paper against thickness](docs/images/thickness.png)
 
 A spec places nets as parts (`at`, `rot`, `scale`). One net placed many times shares its pixels. Every net gets the
 same texel density. Trees come from `tree.py`: a cone trunk, cone branches and leaf cards cut from a leaf sheet.

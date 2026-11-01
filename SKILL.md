@@ -25,6 +25,7 @@ All in `scripts/`. Pure Python except `bp_fold.py`, `bp_unfold.py`, `blender_io.
 | `image.py edit painted.png "prompt" template.png --transparent` | the paid call: paints the dieline (`--dry-run` first) |
 | `template.py clean layout.json painted.png texture.png --review RD` | fits, cleans, bleeds, writes `RD/checks/papercraft.json` |
 | `leaves.py leaf_sheet.png leaves.json` | one convex card per leaf blob |
+| `holes.py layout.json texture.png` | outlines of alpha holes in thick see-through nets, so they get rims too |
 | `run_fold.py -- A [review/NN]` | headless fold: `export/<name>.glb` (WEBP), `build/<name>.blend`, 4 review views, `export/<name>_fold.glb` |
 | `glb_check.py export/*.glb` | reads the GLB JSON: meshes, morph targets, clip names, image types |
 | `unfold.py layout.json` | fold animation math (hinge tree for boxes and cards, isometric roll for cones). Self check |
@@ -54,7 +55,9 @@ Metres, Z up, the front faces -Y. The folder name and `"name"` should match: out
   or the net when the alpha cuts holes (window panes, ladder rungs).
 - Any net: `"thick"` (metres) gives its faces a real thickness, inward, with rims on free edges that show the
   dieline colour at the boundary. For planks and cards: window frame 0.06, open cart walls 0.025, ladder 0.03.
-  A `double` card does not need its back face once thick. Holes cut by alpha (panes) stay paper thin.
+  A `double` card does not need its back face once thick. For a thick net that is not opaque, run
+  `python3 scripts/holes.py layout.json texture.png` after `template.py clean`: it stores the alpha hole outlines
+  (panes, ladder gaps, a trigger guard) and `bp_fold` adds rims around them, kept by the fold animation.
 - One net placed many times shares its pixels (4 legs, 6 branches). Parts take `at`, `rot` (degrees XYZ), `scale`.
 
 ## Steps
@@ -72,6 +75,7 @@ BLENDER=blender                                     # macOS: /Applications/Blend
    `--dry-run`. Trees also need a leaf sheet: `image.py gen $A/leaf_sheet.png "$(cat $A/leaf_prompt.txt)"
    --transparent` (same dry run and question), then `python3 $S/leaves.py $A/leaf_sheet.png $A/leaves.json`.
 5. `python3 $S/template.py clean $A/layout.json $A/painted.png $A/texture.png --review $A/review/01`.
+   A thick net that is not opaque: then `python3 $S/holes.py $A/layout.json $A/texture.png`.
 6. `$BLENDER --background --factory-startup --python $S/run_fold.py -- $A review/01`.
 7. `python3 $S/glb_check.py $A/export/*.glb`, then look at `$A/review/01/front.png`, `left`, `back`, `right`.
 

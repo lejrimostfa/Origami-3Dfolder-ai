@@ -57,11 +57,17 @@ def fold_anim(m, frames=72, hold=12, steps=16, nets_end=0.8, window=0.5, leaves_
             poses[i] = (_pc_part_matrix(part, k, i), unfold.net_pose(lay, lay["nets"][part["net"]], k))
         kb = obj.shape_key_add(name=f"Fold{s:02d}", from_mix=False)
         for vi, sv in enumerate(src):
-            mx, pose = poses[sv[0]]
-            p = mx @ Vector(pose[sv[1]][sv[2]])
-            if len(sv) == 4:                               # a back vertex of a thick face: inward of its posed face,
-                n = (mx.to_3x3() @ Vector(unfold._normal(pose[sv[1]]))).normalized()   # in metres after scale
-                p -= n * sv[3]
+            if sv[0] == "w":                               # a hole rim point: affine mix of 3 corners, then inward
+                _, pi, fi, w, depth = sv
+                mx, pose = poses[pi]
+                p = mx @ sum((Vector(pose[fi][k]) * w[k] for k in range(3)), Vector())
+            else:
+                mx, pose = poses[sv[0]]
+                pi, fi = sv[0], sv[1]
+                p = mx @ Vector(pose[fi][sv[2]])
+                depth = sv[3] if len(sv) == 4 else 0.0     # a back vertex of a thick face
+            if depth:                                      # inward of its posed face, in metres after scale
+                p -= (mx.to_3x3() @ Vector(unfold._normal(pose[fi]))).normalized() * depth
             kb.data[vi].co = p
         for j, (base, g0) in enumerate(cards):
             vi = len(src) + j

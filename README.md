@@ -4,7 +4,7 @@ Papercraft 3D assets for games, as a Claude Code skill. A simple shape is unfold
 model paints the dieline. Blender folds it back into a textured low-poly GLB. A second GLB shows the flat sheet
 folding into the object (morph targets, one clip `Fold`).
 
-![The nine example objects, folded](docs/images/hero.png)
+![The example objects, folded](docs/images/hero.png)
 
 ![demo](docs/demo.gif)
 
@@ -71,7 +71,7 @@ same texel density. Trees come from `tree.py`: a cone trunk, cone branches and l
 
 ## Examples
 
-`examples/` holds nine finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
+`examples/` holds eleven finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
 GLBs. Each image below shows the dieline sent to the painter, the painting that came back, and the folded object.
 
 Crate: one box, cross net.
@@ -102,6 +102,20 @@ Flintlock: the image model refused to paint a pistol dieline. So it painted a sh
 swatches instead (brass, walnut, steel), and `swatch.py` placed them on each piece by code. Stock and lock are
 extruded profiles, barrel, band and ramrod are cylinders, the trigger guard is a loop cut in a `thick` card.
 ![flintlock](docs/images/flintlock.png)
+
+## Characters
+
+Rounded low-poly characters work too. A head is three frustums along the view axis: a front bevel with the face on
+its end disk, a band, a back bevel. Torso, arms and legs are tapered cylinders, hanging parts use `"flip"`.
+One painting per character. [Video](docs/characters.mp4), [vertical](docs/characters_vertical.mp4).
+
+![characters](docs/characters.gif)
+
+Chibi ninja: 104 faces, 54 KB.
+![ninja](docs/images/ninja.png)
+
+Shiba dog: 141 faces, 74 KB.
+![dog](docs/images/dog.png)
 
 ## Fold animation
 

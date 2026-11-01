@@ -1,6 +1,6 @@
 # Examples
 
-Nine finished assets. Each folder: `spec.json`, `prompt.txt`, `layout.json`, `painted.png` (raw image model
+Eleven finished assets. Each folder: `spec.json`, `prompt.txt`, `layout.json`, `painted.png` (raw image model
 output), `texture.png` (after `template.py clean`) and `export/<name>.glb` plus `export/<name>_fold.glb`.
 
 | Example | Nets | Notes |
@@ -14,6 +14,8 @@ output), `texture.png` (after `template.py clean`) and `export/<name>.glb` plus 
 | handcart | open box 2.5 cm `thick`, cylinders with both caps, boxes | wheels are short capped cylinders |
 | water_tower | capped cylinder, cone, boxes, `thick` card ladder | ladder gaps cut by alpha |
 | flintlock | extruded profiles, cylinders, `thick` card guard | no dieline painting: `prompt.txt` made `swatches.png`, placed by `swatch.py` with `assign.json` |
+| ninja | frustum head (face on the front cap), flipped torso, arms and legs, extruded shoes, thick ribbon card | rounded character |
+| dog | frustum body, head, snout, cone ears and tail, flipped legs | rounded character |
 
 `market_stall/layout.json` comes from an earlier version of the extrude net. Its painting fits that layout, so the
 layout is kept as painted. `net.py` on its spec now gives a different awning layout: rerun it only to repaint.

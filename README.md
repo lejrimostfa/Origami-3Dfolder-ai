@@ -137,4 +137,11 @@ and starts flat, plus nets, caps, the paint cleanup and the gate.
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+Code: [Apache License 2.0](LICENSE). Use it anywhere, commercial projects included. Keep the [NOTICE](NOTICE) file
+in a redistribution or a fork.
+
+Example assets in `examples/` (images, textures, GLB): [CC BY 4.0](examples/LICENSE). Free to reuse, with a credit
+to lejrimostfa and a link to this repo.
+
+If it helps your game or your video, a mention or a link is appreciated. GitHub's "Cite this repository" button
+gives a ready citation ([CITATION.cff](CITATION.cff)).

@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use Origami-3Dfolder-ai, please cite it as below."
+title: "Origami-3Dfolder-ai: papercraft 3D assets folded from one AI-painted dieline"
+type: software
+authors:
+  - alias: lejrimostfa
+repository-code: "https://github.com/lejrimostfa/Origami-3Dfolder-ai"
+url: "https://github.com/lejrimostfa/Origami-3Dfolder-ai"
+license: Apache-2.0
+date-released: 2026-11-01
+keywords:
+  - papercraft
+  - origami
+  - blender
+  - gltf
+  - game-assets
+  - claude-code

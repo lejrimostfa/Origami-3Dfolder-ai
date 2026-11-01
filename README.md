@@ -4,6 +4,8 @@ Papercraft 3D assets for games, as a Claude Code skill. A simple shape is unfold
 model paints the dieline. Blender folds it back into a textured low-poly GLB. A second GLB shows the flat sheet
 folding into the object (morph targets, one clip `Fold`).
 
+![The eight example objects, folded](docs/images/hero.png)
+
 ![demo](docs/demo.gif)
 
 [Demo video](docs/demo.mp4)
@@ -61,8 +63,39 @@ same texel density. Trees come from `tree.py`: a cone trunk, cone branches and l
 
 ## Examples
 
-`examples/` holds eight finished assets: crate, window, table, tree, morris_column, market_stall, handcart,
-water_tower. Each has its spec, prompt, layout, raw painting, cleaned texture and both GLBs.
+`examples/` holds eight finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
+GLBs. Each image below shows the dieline sent to the painter, the painting that came back, and the folded object.
+
+Crate: one box, cross net.
+![crate](docs/images/crate.png)
+
+Window: a double card, panes cut out by alpha.
+![window](docs/images/window.png)
+
+Table: a tray net top and one leg net placed four times.
+![table](docs/images/table.png)
+
+Tree: cone trunk and branches. The leaves are cards cut from a separate leaf sheet.
+![tree](docs/images/tree.png)
+
+Morris column: five frustums. The cornice is a frustum turned upside down.
+![morris column](docs/images/morris_column.png)
+
+Market stall: boxes and an extruded gable awning.
+![market stall](docs/images/market_stall.png)
+
+Handcart: boxes, an axle, wheels as short cylinders with both caps.
+![handcart](docs/images/handcart.png)
+
+Water tower: a capped cylinder tank, a cone roof, box legs and a card ladder.
+![water tower](docs/images/water_tower.png)
+
+## Fold animation
+
+`<name>_fold.glb` plays the flat sheet folding into the object. Box and card faces turn about their shared edges.
+Cones roll up without stretching the paper. Parts fold in spec order. Leaves grow last.
+
+![fold steps](docs/images/fold_steps.png)
 
 ## Fallbacks
 

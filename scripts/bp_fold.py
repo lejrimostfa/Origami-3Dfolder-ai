@@ -98,7 +98,7 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
                 faces.append((face, fi))
             if net.get("thick"):
                 bm.normal_update()
-                _pc_thicken(bm, uv, faces, net["thick"], pi, sources, net.get("holes"))
+                _pc_thicken(bm, uv, faces, net["thick"], pi, sources, net.get("holes"), 6 / lay["atlas_px"])
             continue
         made = []
         for fi, f in enumerate(net["faces"]):
@@ -107,7 +107,7 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
             faces.append((vs[0].link_faces[0], fi))
         if net.get("thick"):
             bm.normal_update()
-            _pc_thicken(bm, uv, faces, net["thick"], pi, None, net.get("holes"))
+            _pc_thicken(bm, uv, faces, net["thick"], pi, None, net.get("holes"), 6 / lay["atlas_px"])
         bmesh.ops.remove_doubles(bm, verts=made, dist=1e-5)
     bm.to_mesh(me)
     bm.free()

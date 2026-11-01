@@ -12,12 +12,13 @@ def _pc_hole_rims(bm, uv, f, fi, loops_uv, t, pi, sources):
     det = (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y)
     for loop in loops_uv:
         ring = []
-        for u, v in loop:
+        for pt in loop:
+            u, v = pt[0], pt[1]
             w1 = ((u - a.x) * (c.y - a.y) - (c.x - a.x) * (v - a.y)) / det
             w2 = ((b.x - a.x) * (v - a.y) - (u - a.x) * (b.y - a.y)) / det
             w = (1 - w1 - w2, w1, w2)
             p = sum((L[k].vert.co * w[k] for k in range(3)), Vector())
-            ring.append((bm.verts.new(p), bm.verts.new(p - n * t), (u, v)))
+            ring.append((bm.verts.new(p), bm.verts.new(p - n * t), tuple(pt[2:4]) if len(pt) > 2 else (u, v)))
             if sources is not None:
                 sources += [("w", pi, fi, w, 0.0), ("w", pi, fi, w, t)]
         for i in range(len(ring)):
@@ -28,7 +29,7 @@ def _pc_hole_rims(bm, uv, f, fi, loops_uv, t, pi, sources):
                 loop[uv].uv = tt
 
 
-def _pc_thicken(bm, uv, made, t, pi, sources, holes=None):
+def _pc_thicken(bm, uv, made, t, pi, sources, holes=None, inset_uv=6 / 1024):
     """Give a part's faces a thickness t, inward, so the outside keeps the spec size: a back face per face and a
     rim along every free edge (an edge no other face of the part shares). The rim takes the uvs of its edge, so it
     shows the dieline colour at the boundary. made: [(bmface, face index)]. Back verts are recorded in sources
@@ -58,7 +59,10 @@ def _pc_thicken(bm, uv, made, t, pi, sources, holes=None):
                 continue
             rim = bm.faces.new([b.vert, a.vert, back[i], back[j]])
             rim.material_index = f.material_index
+            # sample the edge colour a few px inside the face: the painted border is often a dark outline
+            cuv = sum((l[uv].uv for l in loops), Vector((0.0, 0.0))) / len(loops)
             for loop, src in zip(rim.loops, (b, a, a, b)):
-                loop[uv].uv = src[uv].uv
+                d = cuv - src[uv].uv
+                loop[uv].uv = src[uv].uv + d / max(d.length, 1e-9) * min(inset_uv, d.length * 0.5)
         if holes and str(fi) in holes:
             _pc_hole_rims(bm, uv, f, fi, holes[str(fi)], t, pi, sources)

@@ -15,7 +15,7 @@ Install: copy this folder to `~/.claude/skills/origami-3dfolder-ai/` (all projec
 
 ## Tools
 
-All in `scripts/`. Pure Python except `bp_fold.py`, `bp_unfold.py`, `blender_io.py` and `run_fold.py` (Blender).
+All in `scripts/`. Pure Python except `bp_fold.py`, `bp_thick.py`, `bp_unfold.py`, `blender_io.py` and `run_fold.py` (Blender).
 
 | File | Does |
 |---|---|

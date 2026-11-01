@@ -15,6 +15,7 @@ import bpy
 HERE = os.path.dirname(os.path.abspath(__file__))
 _PC_HERE = HERE                                         # bp_unfold imports unfold.py from here
 exec(open(os.path.join(HERE, "blender_io.py")).read())
+exec(open(os.path.join(HERE, "bp_thick.py")).read())        # thickness helpers used by fold()
 exec(open(os.path.join(HERE, "bp_fold.py")).read())
 exec(open(os.path.join(HERE, "bp_unfold.py")).read())
 

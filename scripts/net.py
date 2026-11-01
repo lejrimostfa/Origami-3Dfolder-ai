@@ -20,6 +20,7 @@ Net types (units are metres, Z up, front is -Y, every face winds outward):
     extrude  outline [[y, z], ...] (a profile: gable roof, pistol grip), length along X centred on 0. polynet.py.
     poly     verts and faces (wound outward) of any low-poly mesh, unfolded by its shared edges. polynet.py.
 Any net: "thick": metres gives its faces a real thickness, inward, with rims on free edges (planks, cards).
+Any net: "flip": true turns its sheet 180 degrees, so a part placed upside down (rot [180, 0, 0]) paints upright.
 
 Layout output: per net its polygons (3D verts + UV in 0..1) and per part its placement. One texel density for
 every net, so a leg and a table top share the same detail per metre.
@@ -116,6 +117,13 @@ def card_net(w, h, double=False):
 
 
 def build_net(n):
+    polys = _build(n)
+    if n.get("flip"):                  # a part placed upside down (a hanging leg): turn its sheet 180 degrees, no mirror
+        polys = [(name, [(xyz, (-u, -v)) for xyz, (u, v) in poly]) for name, poly in polys]
+    return polys
+
+
+def _build(n):
     t = n["type"]
     if t == "box":
         w, d, h = n["size"]

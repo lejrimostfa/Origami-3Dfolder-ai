@@ -58,6 +58,10 @@ Metres, Z up, the front faces -Y. The folder name and `"name"` should match: out
   A `double` card does not need its back face once thick. For a thick net that is not opaque, run
   `python3 scripts/holes.py layout.json texture.png` after `template.py clean`: it stores the alpha hole outlines
   (panes, ladder gaps, a trigger guard) and `bp_fold` adds rims around them, kept by the fold animation.
+- Any net: `"flip": true` turns its sheet 180 degrees, so a part hanging down (`rot` [180, 0, 0]: arms, legs) paints
+  upright. A frustum lying along +y needs `rot` [-90, 180, 0], else its end disk paints upside down.
+- Round characters: a head is three frustums along y (front bevel with the face on its cap, a band, a back bevel).
+  Tell the painter where each band starts: a band around a lying cylinder has its ends at the bottom.
 - One net placed many times shares its pixels (4 legs, 6 branches). Parts take `at`, `rot` (degrees XYZ), `scale`.
 
 ## Steps

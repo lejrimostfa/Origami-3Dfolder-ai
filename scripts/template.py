@@ -63,9 +63,13 @@ def draw(lay, out_dir):
                     label = f"{key} {f['name']}" if len(lay["nets"]) > 1 and key != f["name"] else f["name"]
                     d.text((cx, cy), label.upper(), fill=(120, 120, 120, 255), font=font, anchor="mm")
         else:
-            pts = [_px(uv, n) for f in net["faces"] for uv in f["uv"]]
-            cx, cy = sum(p[0] for p in pts) / len(pts), sum(p[1] for p in pts) / len(pts)
-            d.text((cx, cy), key.upper(), fill=(120, 120, 120, 255), font=font, anchor="mm")
+            # one label for the strip or fan, and one per cap disk, so the painter knows which disk is the face
+            caps = [f for f in net["faces"] if f["name"].startswith("cap")]
+            body = [f for f in net["faces"] if not f["name"].startswith("cap")] or caps
+            for group, label in [(body, key)] + [([f], f"{key} {f['name']}") for f in caps]:
+                pts = [_px(uv, n) for f in group for uv in f["uv"]]
+                cx, cy = sum(p[0] for p in pts) / len(pts), sum(p[1] for p in pts) / len(pts)
+                d.text((cx, cy), label.upper(), fill=(120, 120, 120, 255), font=font, anchor="mm")
     os.makedirs(out_dir, exist_ok=True)
     img.save(os.path.join(out_dir, "template.png"))
     m, _ = masks(lay)

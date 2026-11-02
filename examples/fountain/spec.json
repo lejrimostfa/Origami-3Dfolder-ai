@@ -1,0 +1,131 @@
+{
+ "name": "fountain",
+ "atlas_px": 1024,
+ "pad_px": 8,
+ "opaque": true,
+ "normal_strength": 3.0,
+ "nets": {
+  "pool": {
+   "type": "frustum",
+   "r0": 0.6,
+   "r1": 0.6,
+   "h": 0.35,
+   "seg": 12,
+   "flip": true,
+   "thick": 0.06
+  },
+  "column": {
+   "type": "frustum",
+   "r0": 0.09,
+   "r1": 0.075,
+   "h": 0.64,
+   "seg": 8
+  },
+  "bowl": {
+   "type": "frustum",
+   "r0": 0.33,
+   "r1": 0.1,
+   "h": 0.14,
+   "seg": 12,
+   "cap": true,
+   "flip": true,
+   "thick": 0.035
+  },
+  "finial": {
+   "type": "frustum",
+   "r0": 0.065,
+   "r1": 0.0,
+   "h": 0.2,
+   "seg": 8
+  }
+ },
+ "parts": [
+  {
+   "net": "pool",
+   "at": [
+    0,
+    0,
+    0.35
+   ],
+   "rot": [
+    180,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "column",
+   "at": [
+    0,
+    0,
+    0.3
+   ]
+  },
+  {
+   "net": "bowl",
+   "at": [
+    0,
+    0,
+    1.06
+   ],
+   "rot": [
+    180,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "finial",
+   "at": [
+    0,
+    0,
+    1.0
+   ]
+  }
+ ],
+ "water": [
+  {
+   "kind": "disk",
+   "at": [
+    0,
+    0,
+    0.29
+   ],
+   "r": 0.535,
+   "tex": "surface",
+   "speed": [
+    0.04,
+    0.025
+   ]
+  },
+  {
+   "kind": "disk",
+   "at": [
+    0,
+    0,
+    1.035
+   ],
+   "r": 0.29,
+   "tex": "surface",
+   "speed": [
+    -0.03,
+    0.04
+   ]
+  },
+  {
+   "kind": "veil",
+   "at": [
+    0,
+    0,
+    0.29
+   ],
+   "r": 0.34,
+   "h": 0.77,
+   "tex": "fall",
+   "speed": [
+    0.0,
+    0.8
+   ]
+  }
+ ]
+}

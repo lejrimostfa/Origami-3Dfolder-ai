@@ -58,10 +58,11 @@ def _undo_tracks(undo):
             tr.strips.new(name, start, act)
 
 
-def export_glb(m, path, clips=None, image_format=None):
+def export_glb(m, path, clips=None, image_format=None, pointer=False):
     """One GLB for Three.js: +Y up, embedded textures, only the model's objects of the active scene.
     clips: names from m["clips"] to ship. None = all of them, [] = static mesh (no animation at all).
-    image_format: None keeps the exporter default, "WEBP" or "JPEG" shrink the textures."""
+    image_format: None keeps the exporter default, "WEBP" or "JPEG" shrink the textures.
+    pointer: also ship material animations (scrolling water) through KHR_animation_pointer."""
     path = os.path.abspath(path)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     names = sorted(m["clips"]) if clips is None else list(clips)
@@ -79,6 +80,8 @@ def export_glb(m, path, clips=None, image_format=None):
         kw["export_animation_mode"] = 'NLA_TRACKS'    # one glTF animation per track, nothing else
     if image_format and "export_image_format" in props:
         kw["export_image_format"] = image_format
+    if pointer and "export_pointer_animation" in props:
+        kw["export_pointer_animation"] = True
     try:
         bpy.ops.export_scene.gltf(**kw)
     finally:

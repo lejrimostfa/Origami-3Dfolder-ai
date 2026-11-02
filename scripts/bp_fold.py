@@ -23,7 +23,16 @@ def _pc_abs(p):
     return os.path.abspath(p)
 
 
-def _pc_material(name, image_path, clip, normal_path=None):
+def _pc_occlusion_group():
+    """The node group the glTF exporter reads occlusion from (its "glTF Material Output" convention)."""
+    g = bpy.data.node_groups.get("glTF Material Output")
+    if g is None:
+        g = bpy.data.node_groups.new("glTF Material Output", "ShaderNodeTree")
+        g.interface.new_socket("Occlusion", in_out="INPUT", socket_type="NodeSocketFloat")
+    return g
+
+
+def _pc_material(name, image_path, clip, normal_path=None, ao_path=None):
     mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
     mat.use_nodes = True
     nt = mat.node_tree
@@ -43,6 +52,20 @@ def _pc_material(name, image_path, clip, normal_path=None):
         nmap = nt.nodes.new("ShaderNodeNormalMap")
         nt.links.new(nimg.outputs["Color"], nmap.inputs["Color"])
         nt.links.new(nmap.outputs["Normal"], bsdf.inputs["Normal"])
+    if ao_path and os.path.exists(_pc_abs(ao_path)):           # maps.py: cavity occlusion for game engines
+        aimg = nt.nodes.new("ShaderNodeTexImage")
+        aimg.image = bpy.data.images.load(_pc_abs(ao_path), check_existing=True)
+        aimg.image.colorspace_settings.name = "Non-Color"
+        sep = nt.nodes.new("ShaderNodeSeparateColor")
+        out = nt.nodes.new("ShaderNodeGroup")
+        out.node_tree = _pc_occlusion_group()
+        nt.links.new(aimg.outputs["Color"], sep.inputs["Color"])
+        nt.links.new(sep.outputs[0], out.inputs["Occlusion"])
+    bsdf.inputs["Roughness"].default_value = 0.7
+    for sock in ("Specular IOR Level", "Specular"):            # a soft sheen on paint and stone
+        if sock in bsdf.inputs:
+            bsdf.inputs[sock].default_value = 0.35
+            break
     if clip:
         rnd = nt.nodes.new("ShaderNodeMath")
         rnd.operation = "ROUND"
@@ -120,7 +143,8 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
     bm.free()
     clip = not all(n["opaque"] for n in lay["nets"].values())
     normal = os.path.join(os.path.dirname(_pc_abs(texture_path)), "normal.png")
-    me.materials.append(_pc_material(f"MAT-{name}", texture_path, clip, normal))
+    ao = os.path.join(os.path.dirname(_pc_abs(texture_path)), "ao.png")
+    me.materials.append(_pc_material(f"MAT-{name}", texture_path, clip, normal, ao))
     return {"objects": [obj], "root": obj, "armature": None, "clips": {}, "name": name, "layout": lay,
             "sources": sources}
 

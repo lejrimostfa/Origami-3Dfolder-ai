@@ -3,6 +3,7 @@ import glob
 import json
 import os
 
+import numpy as np
 import pytest
 
 import net
@@ -71,5 +72,16 @@ def test_example_glbs(name):
     import glb_check
     d = os.path.join(ROOT, "examples", name, "export")
     static, fold = glb_check.info(f"{d}/{name}.glb"), glb_check.info(f"{d}/{name}_fold.glb")
-    assert static["images"] == ["image/webp"] and not static["animations"]
-    assert fold["animations"] == ["Fold"] and all(n > 0 for n in fold["morph_targets"])
+    extra = set(static["animations"])                  # Blink, Talk (expressions.json), Flow (spec "water")
+    assert static["images"] == ["image/webp"] and extra <= {"Blink", "Talk", "Flow"}
+    assert set(fold["animations"]) == {"Fold"} | extra and all(n > 0 for n in fold["morph_targets"])
+
+
+def test_water_textures_tile():
+    """A scrolling water texture must wrap: its first and last rows and columns differ like any neighbours."""
+    import water
+    rng = np.random.default_rng(1)
+    for img in (water.surface(128, rng), water.fall(128, rng)):
+        a = img.astype(float)
+        rows, cols = np.abs(np.diff(a, axis=0)).mean(), np.abs(np.diff(a, axis=1)).mean()
+        assert np.abs(a[0] - a[-1]).mean() < 3 * rows and np.abs(a[:, 0] - a[:, -1]).mean() < 3 * cols

@@ -26,6 +26,11 @@ All in `scripts/`. Pure Python except `bp_fold.py`, `bp_thick.py`, `bp_unfold.py
 | `template.py clean layout.json painted.png texture.png --review RD` | fits, erases painted fold lines, cleans, bleeds, writes `RD/checks/papercraft.json` |
 | `leaves.py leaf_sheet.png leaves.json` | one convex card per leaf blob |
 | `maps.py A [--strength 3]` | normal map inferred from `texture.png`, picked up by `run_fold.py` |
+| `expressions.py sheet/split cells.json IMG` | face variants (eyes closed, mouth open) for many characters in one image edit |
+| `bp_expr.py` | variants as collapsed disks opened by shape keys, clips `Blink` and `Talk` (glTF morph targets, step) |
+| `water.py A` | looping water textures by code: `water_surface.png`, `water_fall.png` |
+| `bp_water.py` | spec `"water"`: disks and falling veils, uv scrolled in clip `Flow` (KHR_texture_transform + KHR_animation_pointer) |
+| `bp_look.py` | render look: warm key, cool fill, rim light, sky gradient, EEVEE ray traced AO and reflections |
 | `holes.py layout.json texture.png` | outlines of alpha holes in thick see-through nets, so they get rims too |
 | `run_fold.py -- A [review/NN]` | headless fold: `export/<name>.glb` (WEBP), `build/<name>.blend`, 4 review views, `export/<name>_fold.glb` |
 | `glb_check.py export/*.glb` | reads the GLB JSON: meshes, morph targets, clip names, image types |
@@ -81,7 +86,9 @@ BLENDER=blender                                     # macOS: /Applications/Blend
    --transparent` (same dry run and question), then `python3 $S/leaves.py $A/leaf_sheet.png $A/leaves.json`.
 5. `python3 $S/template.py clean $A/layout.json $A/painted.png $A/texture.png --review $A/review/01`.
    A thick net that is not opaque: then `python3 $S/holes.py $A/layout.json $A/texture.png`.
-   Then `python3 $S/maps.py $A` for the normal map (`"normal_strength": 1.5` in the spec for characters).
+   Then `python3 $S/maps.py $A` for the normal and AO maps (`"normal_strength": 1.5` in the spec for characters).
+   Water: `python3 $S/water.py $A` when the spec has `"water"`. Faces: one edit for every variant
+   (`expressions.py sheet`, image edit, `expressions.py split`), then `run_fold.py` adds Blink and Talk.
 6. `$BLENDER --background --factory-startup --python $S/run_fold.py -- $A review/01`.
 7. `python3 $S/glb_check.py $A/export/*.glb`, then look at `$A/review/01/front.png`, `left`, `back`, `right`.
 
@@ -139,6 +146,16 @@ profile builds and checks in a second.
   `coverage_pct` >= 85. `pass` is false otherwise: repaint or fix the prompt, do not ship.
 - `glb_check.py`: the static GLB has WEBP images, the `_fold` GLB has morph targets and one clip `Fold`.
 - Look at the four review views before calling it done.
+
+## Alive assets
+
+- Face variants: one image edit with the current disks on top and grey disks below paints every variant at once.
+  `split` fits each one back. In the GLB each variant is a disk 0.6 mm in front, collapsed at rest, opened by a
+  shape key with constant steps: a flipbook through standard morph targets, read by every glTF viewer.
+- Water: `KHR_animation_pointer` on the `KHR_texture_transform` offset. Blender exports it (pointer=True). Three.js
+  needs a loader plugin for KHR_animation_pointer, or scroll the `map.offset` of the `Water` materials in code.
+  Each loop ends on a whole tile, so it has no seam.
+- Look: `setup_look(centre, radius)` before the camera. Small key light for readable shadows, world at 0.45.
 
 ## Lessons
 

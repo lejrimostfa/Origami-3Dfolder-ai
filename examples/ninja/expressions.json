@@ -1,0 +1,17 @@
+{
+ "sheet": "faces.png",
+ "variants": [
+  {
+   "name": "blink",
+   "net": "face",
+   "face": "cap",
+   "clip": "Blink",
+   "uv_box": [
+    0.046731,
+    0.169922,
+    0.306785,
+    0.443359
+   ]
+  }
+ ]
+}

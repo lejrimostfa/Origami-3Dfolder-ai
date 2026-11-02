@@ -1,6 +1,6 @@
 # Examples
 
-Eleven finished assets. Each folder: `spec.json`, `prompt.txt`, `layout.json`, `painted.png` (raw image model
+Twelve finished assets. Each folder: `spec.json`, `prompt.txt`, `layout.json`, `painted.png` (raw image model
 output), `texture.png` (after `template.py clean`) and `export/<name>.glb` plus `export/<name>_fold.glb`.
 
 | Example | Nets | Notes |
@@ -16,6 +16,10 @@ output), `texture.png` (after `template.py clean`) and `export/<name>.glb` plus 
 | flintlock | extruded profiles, cylinders, `thick` card guard | no dieline painting: `prompt.txt` made `swatches.png`, placed by `swatch.py` with `assign.json` |
 | ninja | frustum head (face on the front cap), flipped torso, arms and legs, extruded shoes, thick ribbon card | rounded character |
 | dog | frustum body, head, snout, cone ears and tail, flipped legs | rounded character |
+| fountain | capped cylinders and cones, thick basin and bowl, spec `"water"` | water by `water.py`, clip `Flow` |
+
+`expressions/` holds the sheet, prompt and painting that made the Blink and Talk variants of ninja and dog
+(`faces.png` and `expressions.json` in their folders).
 
 `market_stall/layout.json` comes from an earlier version of the extrude net. Its painting fits that layout, so the
 layout is kept as painted. `net.py` on its spec now gives a different awning layout: rerun it only to repaint.

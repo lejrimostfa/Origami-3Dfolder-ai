@@ -1,0 +1,29 @@
+{
+ "sheet": "faces.png",
+ "variants": [
+  {
+   "name": "blink",
+   "net": "face",
+   "face": "cap",
+   "clip": "Blink",
+   "uv_box": [
+    0.369973,
+    0.169922,
+    0.630027,
+    0.443359
+   ]
+  },
+  {
+   "name": "mouth_open",
+   "net": "snout",
+   "face": "cap",
+   "clip": "Talk",
+   "uv_box": [
+    0.686523,
+    0.169922,
+    0.959961,
+    0.443359
+   ]
+  }
+ ]
+}

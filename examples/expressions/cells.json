@@ -1,0 +1,23 @@
+[
+ {
+  "asset": "examples/ninja",
+  "net": "face",
+  "face": "cap",
+  "clip": "Blink",
+  "name": "blink"
+ },
+ {
+  "asset": "examples/dog",
+  "net": "face",
+  "face": "cap",
+  "clip": "Blink",
+  "name": "blink"
+ },
+ {
+  "asset": "examples/dog",
+  "net": "snout",
+  "face": "cap",
+  "clip": "Talk",
+  "name": "mouth_open"
+ }
+]

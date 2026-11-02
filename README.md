@@ -71,7 +71,7 @@ same texel density. Trees come from `tree.py`: a cone trunk, cone branches and l
 
 ## Examples
 
-`examples/` holds eleven finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
+`examples/` holds twelve finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
 GLBs. Each image below shows the dieline sent to the painter, the painting that came back, and the folded object.
 
 Crate: one box, cross net.
@@ -113,12 +113,37 @@ cartoon look.
 
 ## Relief (normal maps)
 
-`python3 scripts/maps.py ASSET_DIR` infers a normal map from the painted texture: free, no image call. Height is
+`python3 scripts/maps.py ASSET_DIR` infers a normal map and an occlusion map (`ao.png`) from the painted texture:
+free, no image call. Height is
 guessed from brightness, then turned into clamped slopes, so wood grain, plank edges, rivets and staves catch the
 light. `run_fold.py` plugs `normal.png` into the material and the GLB ships it as `normalTexture`. Strength 3 by
 default; characters use `"normal_strength": 1.5` in their spec so painted eyes do not turn into bumps.
 
 ![flat against normal map, grazing light](docs/images/relief.png)
+
+## Alive: blink, talk, flowing water
+
+![blink, talk and flowing water](docs/alive.gif)
+
+[Video](docs/alive.mp4). Three kinds of glTF clips ship next to `Fold`, in the static and the fold GLB:
+- `Blink` and `Talk`: one image edit paints every face variant at once (`expressions.py`: the current face disks on
+  top of a sheet, grey disks below). Each variant is a disk just in front of the face, collapsed at rest and opened
+  by a stepped morph target. Standard glTF, any viewer plays it.
+- `Flow`: water built by code (`water.py`: looping ripples and a falling veil) on disks and veils listed in the spec
+  under `"water"`. The texture scrolls through `KHR_texture_transform`, animated by `KHR_animation_pointer`. Each
+  loop ends on a whole tile, so it has no seam. Three.js needs a loader plugin for `KHR_animation_pointer`, or a
+  few lines that move `material.map.offset` of the water materials.
+
+Fountain: stone painted by the image model, water by code.
+![fountain](docs/images/fountain.png)
+
+## Render look
+
+`scripts/bp_look.py` lights the demo renders: a warm key with readable shadows, a cool fill, a rim light that
+separates the silhouette, a sky to ground gradient, and EEVEE ray tracing for screen space occlusion (the EEVEE
+take on SSAO) and reflections. The GLB also ships `occlusionTexture` (`ao.png` from `maps.py`) and a soft specular.
+
+![before and after the render look](docs/images/look.png)
 
 ## Characters
 

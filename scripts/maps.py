@@ -1,6 +1,7 @@
 """Normal map for a folded asset, inferred from its painted texture. Free, no image call.
 
     python3 scripts/maps.py ASSET_DIR [--strength 3]     -> ASSET_DIR/normal.png (glTF tangent space, green = +Y)
+                                                            and ao.png (cavity occlusion)
 
 Height is guessed from brightness (bright reads raised), blurred, then turned into clamped slopes: wood grain,
 rivets, scales, fur and cloth catch the light. Painted features (eyes, posters) get a light emboss, so characters
@@ -37,6 +38,13 @@ def normal_from_albedo(rgb, strength=3.0, blur=1.5, max_slope=0.6):
     return ((n * 0.5 + 0.5) * 255).astype(np.uint8)
 
 
+def ao_from_albedo(rgb, blur=1.5, radius=4.0, power=1.6):
+    """Cavity occlusion: texels darker than their blurred neighbourhood read as creases. 1 = open, 0 = occluded."""
+    h = _blur(rgb @ np.array([0.2126, 0.7152, 0.0722]), blur)
+    cavity = np.clip((_blur(h, radius) - h) * 4.0, 0, 1)
+    return ((1 - cavity) ** power * 255).astype(np.uint8)
+
+
 def build(asset_dir, strength=None):
     spec = os.path.join(asset_dir, "spec.json")
     if strength is None:
@@ -44,6 +52,8 @@ def build(asset_dir, strength=None):
     rgb = np.asarray(Image.open(os.path.join(asset_dir, "texture.png")).convert("RGB"), float) / 255
     out = os.path.join(asset_dir, "normal.png")
     Image.fromarray(normal_from_albedo(rgb, strength)).save(out)
+    ao = ao_from_albedo(rgb)                                  # shipped as occlusionTexture (RGB: glTF reads R)
+    Image.fromarray(np.dstack([ao, ao, ao])).save(os.path.join(asset_dir, "ao.png"))
     return out, strength
 
 

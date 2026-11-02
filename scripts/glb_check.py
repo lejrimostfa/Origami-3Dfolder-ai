@@ -4,7 +4,7 @@
     glb_check.py export/crate.glb export/crate_fold.glb
 
 Per file: size, mesh names, morph targets per primitive, animation names, image types and the generator string.
-Exit code 1 when a *_fold.glb has no morph targets or no "Fold".
+Exit code 1 when a *_fold.glb has no morph targets or no "Fold" clip (Blink, Talk and Flow may come along).
 """
 import json
 import os
@@ -37,7 +37,7 @@ def info(path):
 def ok(r):
     if not r["file"].endswith("_fold.glb"):
         return bool(r["meshes"])
-    return any(r["morph_targets"]) and r["animations"] == ["Fold"]
+    return any(r["morph_targets"]) and "Fold" in r["animations"]          # plus Blink, Talk, Flow when present
 
 
 if __name__ == "__main__":

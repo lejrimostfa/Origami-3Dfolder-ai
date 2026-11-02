@@ -35,6 +35,7 @@ All in `scripts/`. Pure Python except `bp_fold.py`, `bp_thick.py`, `bp_unfold.py
 | `run_fold.py -- A [review/NN]` | headless fold: `export/<name>.glb` (WEBP), `build/<name>.blend`, 4 review views, `export/<name>_fold.glb` |
 | `glb_check.py export/*.glb` | reads the GLB JSON: meshes, morph targets, clip names, image types |
 | `unfold.py layout.json` | fold animation math (hinge tree for boxes and cards, isometric roll for cones). Self check |
+| `printfold.py sheet.png A` | folds a printable sheet as is (reader in `printable.py`): solved hinge angles, cones, front from the eyes. Check `read_debug.png` |
 | `swatch.py`, `silhouette.py` | fallbacks: atlas from material swatches, extruded profile from one side photo |
 
 ## Spec

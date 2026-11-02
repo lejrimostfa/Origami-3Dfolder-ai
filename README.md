@@ -159,6 +159,22 @@ Chibi ninja: 104 faces, 54 KB.
 Shiba dog: 141 faces, 74 KB.
 ![dog](docs/images/dog.png)
 
+## From a printable sheet (free)
+
+Already have a printable papercraft (solid cut lines, dashed fold lines, white glue flaps)? Fold it as is:
+
+```bash
+python3 scripts/printfold.py sheet.png examples/my_model     # texture.png, layout.json, read.json, read_debug.png
+python3 scripts/maps.py examples/my_model
+blender --background --factory-startup --python scripts/run_fold.py -- examples/my_model
+```
+
+- `printable.py` reads the sheet: pieces, fold lines, regions, glue flaps, faces and hinges. Check `read_debug.png`.
+- `printfold.py` solves one angle per hinge so each flap edge lands on another face. Faces cut along curves (wings,
+  claws) stay near flat. A small piece whose lines meet in one point is rolled into a cone and set on the top face.
+- The front is the face with the most drawing. Its two biggest marks are read as eyes, so the face comes out upright.
+- No image call and no painting: the sheet is the texture. Use sheets you have the rights to.
+
 ## Fold animation
 
 `<name>_fold.glb` plays the flat sheet folding into the object. Box and card faces turn about their shared edges.
@@ -193,7 +209,8 @@ pip install pytest && python3 -m pytest tests
 ```
 
 The tests cover the pure Python parts: every example layout folds back exactly, keeps its edge lengths mid fold
-and starts flat, plus nets, caps, the paint cleanup and the gate.
+and starts flat, plus nets, caps, the paint cleanup and the gate. `test_printable.py` draws a cube sheet by code
+and checks that the reader folds it shut.
 
 ## License
 

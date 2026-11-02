@@ -134,3 +134,12 @@ def test_image_dry_run_calls_nothing(tmp_path):
     body = json.loads(r.stdout[:r.stdout.rindex("}") + 1])
     assert body["model"] == "gpt-image-2.5-sunburst" and body["background"] == "transparent"
     assert body["images"] == ["template.png"] and not (tmp_path / "p.png").exists()
+
+
+def test_maps_flat_and_slope():
+    import maps
+    flat = maps.normal_from_albedo(np.full((32, 32, 3), 0.5))
+    assert np.abs(flat.astype(int) - [127, 127, 255]).max() <= 1          # no slope: straight up
+    ramp = np.repeat(np.linspace(0, 1, 32)[None, :, None], 32, 0).repeat(3, 2)   # brighter to the right
+    n = maps.normal_from_albedo(ramp).astype(int)
+    assert n[16, 16, 0] < 127 and abs(n[16, 16, 1] - 127) <= 1        # the slope rises to +u: normal leans to -u

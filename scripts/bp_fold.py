@@ -23,7 +23,7 @@ def _pc_abs(p):
     return os.path.abspath(p)
 
 
-def _pc_material(name, image_path, clip):
+def _pc_material(name, image_path, clip, normal_path=None):
     mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
     mat.use_nodes = True
     nt = mat.node_tree
@@ -36,6 +36,13 @@ def _pc_material(name, image_path, clip):
     tex.interpolation = "Linear"
     nt.links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
     bsdf.inputs["Roughness"].default_value = 0.85
+    if normal_path and os.path.exists(_pc_abs(normal_path)):   # maps.py: relief inferred from the texture
+        nimg = nt.nodes.new("ShaderNodeTexImage")
+        nimg.image = bpy.data.images.load(_pc_abs(normal_path), check_existing=True)
+        nimg.image.colorspace_settings.name = "Non-Color"
+        nmap = nt.nodes.new("ShaderNodeNormalMap")
+        nt.links.new(nimg.outputs["Color"], nmap.inputs["Color"])
+        nt.links.new(nmap.outputs["Normal"], bsdf.inputs["Normal"])
     if clip:
         rnd = nt.nodes.new("ShaderNodeMath")
         rnd.operation = "ROUND"
@@ -112,7 +119,8 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
     bm.to_mesh(me)
     bm.free()
     clip = not all(n["opaque"] for n in lay["nets"].values())
-    me.materials.append(_pc_material(f"MAT-{name}", texture_path, clip))
+    normal = os.path.join(os.path.dirname(_pc_abs(texture_path)), "normal.png")
+    me.materials.append(_pc_material(f"MAT-{name}", texture_path, clip, normal))
     return {"objects": [obj], "root": obj, "armature": None, "clips": {}, "name": name, "layout": lay,
             "sources": sources}
 

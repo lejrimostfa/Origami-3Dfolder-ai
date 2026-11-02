@@ -111,6 +111,15 @@ cartoon look.
 
 ![fold lines before and after clean](docs/images/fold_lines.png)
 
+## Relief (normal maps)
+
+`python3 scripts/maps.py ASSET_DIR` infers a normal map from the painted texture: free, no image call. Height is
+guessed from brightness, then turned into clamped slopes, so wood grain, plank edges, rivets and staves catch the
+light. `run_fold.py` plugs `normal.png` into the material and the GLB ships it as `normalTexture`. Strength 3 by
+default; characters use `"normal_strength": 1.5` in their spec so painted eyes do not turn into bumps.
+
+![flat against normal map, grazing light](docs/images/relief.png)
+
 ## Characters
 
 Rounded low-poly characters work too. A head is three frustums along the view axis: a front bevel with the face on

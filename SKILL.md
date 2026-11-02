@@ -25,6 +25,7 @@ All in `scripts/`. Pure Python except `bp_fold.py`, `bp_thick.py`, `bp_unfold.py
 | `image.py edit painted.png "prompt" template.png --transparent` | the paid call: paints the dieline (`--dry-run` first) |
 | `template.py clean layout.json painted.png texture.png --review RD` | fits, erases painted fold lines, cleans, bleeds, writes `RD/checks/papercraft.json` |
 | `leaves.py leaf_sheet.png leaves.json` | one convex card per leaf blob |
+| `maps.py A [--strength 3]` | normal map inferred from `texture.png`, picked up by `run_fold.py` |
 | `holes.py layout.json texture.png` | outlines of alpha holes in thick see-through nets, so they get rims too |
 | `run_fold.py -- A [review/NN]` | headless fold: `export/<name>.glb` (WEBP), `build/<name>.blend`, 4 review views, `export/<name>_fold.glb` |
 | `glb_check.py export/*.glb` | reads the GLB JSON: meshes, morph targets, clip names, image types |
@@ -80,6 +81,7 @@ BLENDER=blender                                     # macOS: /Applications/Blend
    --transparent` (same dry run and question), then `python3 $S/leaves.py $A/leaf_sheet.png $A/leaves.json`.
 5. `python3 $S/template.py clean $A/layout.json $A/painted.png $A/texture.png --review $A/review/01`.
    A thick net that is not opaque: then `python3 $S/holes.py $A/layout.json $A/texture.png`.
+   Then `python3 $S/maps.py $A` for the normal map (`"normal_strength": 1.5` in the spec for characters).
 6. `$BLENDER --background --factory-startup --python $S/run_fold.py -- $A review/01`.
 7. `python3 $S/glb_check.py $A/export/*.glb`, then look at `$A/review/01/front.png`, `left`, `back`, `right`.
 

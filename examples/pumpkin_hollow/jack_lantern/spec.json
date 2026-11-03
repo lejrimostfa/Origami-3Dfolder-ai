@@ -85,5 +85,15 @@
     0.4
    ]
   }
- ]
+ ],
+ "round": {
+  "nets": [
+   "low",
+   "belly",
+   "top"
+  ],
+  "cuts": 3,
+  "bulge": 0.07,
+  "lobe": 0.04
+ }
 }

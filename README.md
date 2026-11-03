@@ -68,6 +68,35 @@ the holes the alpha cuts (panes, ladder gaps) and Blender adds rims around them 
 
 A spec places nets as parts (`at`, `rot`, `scale`). One net placed many times shares its pixels. Every net gets the
 same texel density. Trees come from `tree.py`: a cone trunk, cone branches and leaf cards cut from a leaf sheet.
+Each leaf card is the leaf's bounding rectangle, 2 triangles, and alpha clip cuts the shape (spec `"leaf_card": "quad"`,
+the default). `"hull"` follows the leaf outline instead: about 7 triangles per leaf, 3.5 times more, for the same look.
+
+## Rounded shapes
+
+Stacked frustums read square: a pumpkin of three 12-sided bands has a 12-sided outline with corners at each band.
+Real-time engines have no tessellation stage (WebGL, WebGPU), so the rounding is baked in Blender before the export:
+
+```json
+"round": {"nets": ["low", "belly", "top"], "cuts": 3, "bulge": 0.07, "lobe": 0.04}
+```
+
+`bp_round.py` welds the listed nets, subdivides them `cuts` times and moves every vertex to a rounded profile: the
+original rings smoothed by Chaikin cuts, a `bulge` in the middle, and a rib on each painted panel with a groove of
+depth `lobe` on each fold line. UVs follow the subdivision, so the painting stays valid: no new image. Boxes, roofs
+and cards are left sharp. The fold clip still folds the faceted paper.
+
+The bands then meet without a crease, and two things showed the seam instead. The painter shades each band a little
+differently, and a band turned upside down in the atlas turns its normal map tangents too. `seamfade.py` fixes both:
+
+```bash
+python3 scripts/seamfade.py $A/layout.json $A/texture_src.png $A/texture.png --nets low,belly,top
+python3 scripts/maps.py $A
+python3 scripts/seamfade.py $A/layout.json $A/normal.png $A/normal.png --nets low,belly,top --flat --depth 12
+```
+
+![rounding, before and after](docs/images/round_before_after.jpg)
+
+Pumpkin house 134 to 597 faces, jack-o'-lantern 92 to 489, cauldron 68 to 386 (`examples/pumpkin_hollow`).
 
 ## Examples
 
@@ -119,9 +148,9 @@ The layout, terrain and camera come from a separate scene tool that is not part 
 
 ![Pumpkin Hollow](docs/images/pumpkin_hollow.jpg)
 
-Numbers for the level: 207k triangles, of which the 74 folded pieces are 2,688 (12 to 134 faces each). The rest is
-the 525 leaf cards per tree and the terrain grid. In Three.js on an Apple M1 Max: 120 FPS without post-processing,
-35 FPS with the full look. EEVEE renders a 1080p frame with ray tracing in 1.2 s.
+Numbers for the level: 72k triangles with the rounded pumpkins (53k before rounding, 207k in the first build with
+leaf cards cut to each leaf outline). 97 FPS in Three.js on an Apple M1 Max with the full look at max quality
+(measured at 53k triangles). EEVEE renders a 1080p frame with ray tracing in 1.2 s.
 
 Lessons:
 - A cylinder strip starts its seam at the front (-Y). A door painted in the middle of the strip needs the part at

@@ -19,7 +19,8 @@ output), `texture.png` (after `template.py clean`) and `export/<name>.glb` plus 
 | fountain | capped cylinders and cones, thick basin and bowl, spec `"water"` | water by `water.py`, clip `Flow` |
 
 `pumpkin_hollow/` holds the twelve assets of the Pumpkin Hollow level (see the main README), one folder each with the
-same files. `cottage/texture.png` has the back roof shingles copied onto the front slope by hand.
+same files. `cottage/texture.png` has the back roof shingles copied onto the front slope by hand. `pumpkin_house`, `jack_lantern` and
+`cauldron` use `"round"`: their `texture_src.png` is the cleaned painting before `seamfade.py`.
 
 `expressions/` holds the sheet, prompt and painting that made the Blink and Talk variants of ninja and dog
 (`faces.png` and `expressions.json` in their folders).

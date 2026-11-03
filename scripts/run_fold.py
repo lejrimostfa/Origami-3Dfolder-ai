@@ -21,6 +21,7 @@ exec(open(os.path.join(HERE, "bp_fold.py")).read())
 exec(open(os.path.join(HERE, "bp_unfold.py")).read())
 exec(open(os.path.join(HERE, "bp_expr.py")).read())        # Blink, Talk (expressions.json)
 exec(open(os.path.join(HERE, "bp_water.py")).read())       # Flow (spec "water", water.py textures)
+exec(open(os.path.join(HERE, "bp_round.py")).read())       # spec "round": baked rounding of stacked frustums
 
 args = sys.argv[sys.argv.index("--") + 1:]
 A = os.path.abspath(args[0])
@@ -37,6 +38,8 @@ def build(keep_seams):
         print("leaves", add_leaves(m, os.path.join(A, "spec.json"), os.path.join(A, "leaves.json"),
                                    os.path.join(A, "leaf_sheet.png")))
     spec = json.load(open(os.path.join(A, "spec.json"))) if os.path.exists(os.path.join(A, "spec.json")) else {}
+    if not keep_seams:                                  # the fold clip still folds the faceted paper
+        print("round", round_parts(m, spec))
     m["extra_clips"] = add_water(m, spec, A)
     expr = os.path.join(A, "expressions.json")
     m["extra_clips"] += add_expressions(m, expr) if os.path.exists(expr) else []

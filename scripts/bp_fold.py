@@ -103,6 +103,7 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
     (collection or bpy.context.scene.collection).objects.link(obj)
     bm = bmesh.new()
     uv = bm.loops.layers.uv.new("UVMap")
+    tag = bm.faces.layers.int.new("pc_part")             # part index + 1 per face (0: rims), read by bp_round.py
     sources = []
     for pi, part in enumerate(lay["parts"]):
         net, mx = lay["nets"][part["net"]], _pc_matrix(part)
@@ -122,7 +123,7 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
                     face = bm.faces.new(vs)
                 except ValueError:                       # a double card's back face: one face, as remove_doubles gives
                     continue
-                face.smooth = smooth
+                face.smooth, face[tag] = smooth, pi + 1
                 for loop, t in zip(face.loops, f["uv"]):
                     loop[uv].uv = t
                 faces.append((face, fi))
@@ -134,6 +135,7 @@ def fold(layout_path, texture_path, name=None, collection=None, keep_seams=False
         for fi, f in enumerate(net["faces"]):
             vs = _pc_face(bm, uv, [mx @ Vector(c) for c in f["co"]], f["uv"], smooth)
             made += vs
+            vs[0].link_faces[0][tag] = pi + 1
             faces.append((vs[0].link_faces[0], fi))
         if net.get("thick"):
             bm.normal_update()
@@ -154,8 +156,11 @@ def _pc_area(uvs):
 
 
 def add_leaves(m, spec_path, leaves_path, sheet_path):
-    """One flat card per spec leaf_cards entry, cut to the hull of a leaf from the sheet. Same object, second material."""
+    """One flat card per spec leaf_cards entry, from one leaf of the sheet. Same object, second material.
+    spec "leaf_card": "quad" (default) is the leaf's bounding rectangle, 2 triangles, alpha clip cuts the shape.
+    "hull" follows the leaf outline (about 7 triangles): less transparent overdraw, 3.5 times the triangles."""
     spec, cut = json.load(open(_pc_abs(spec_path))), json.load(open(_pc_abs(leaves_path)))
+    quad = spec.get("leaf_card", "quad") == "quad"
     obj = m["root"]
     W, H = cut["px"]
     bm = bmesh.new()
@@ -169,6 +174,10 @@ def add_leaves(m, spec_path, leaves_path, sheet_path):
         bu, bv = leaf["base"]
         k = card["size"] / max(leaf["size"][0] * W, leaf["size"][1] * H)
         uvs = leaf["uv"] if _pc_area(leaf["uv"]) > 0 else leaf["uv"][::-1]
+        if quad:
+            u0, u1 = min(u for u, _ in uvs), max(u for u, _ in uvs)
+            v0, v1 = min(v for _, v in uvs), max(v for _, v in uvs)
+            uvs = [(u0, v0), (u1, v0), (u1, v1), (u0, v1)]           # counter clockwise, like the hull
         mx = _pc_matrix(card)
         cos = [mx @ Vector(((u - bu) * W * k, 0, (v - bv) * H * k)) for u, v in uvs]
         _pc_face(bm, uv, cos, uvs, smooth=True, mat_index=mi)

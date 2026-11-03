@@ -13,6 +13,19 @@ Install: copy this folder to `~/.claude/skills/origami-3dfolder-ai/` (all projec
 `.claude/skills/origami-3dfolder-ai/`. Needs Python 3.10+ with numpy, opencv-python-headless and Pillow
 (`pip install -r requirements.txt`), Blender 4.x, and `OPENAI_API_KEY` in the environment for the paint step.
 
+## Always, without being asked
+
+Do these on every asset, the user should not have to ask:
+1. Buildings or a set of them: one concept image first (front elevation), measured for the sizes, then sent as the
+   second image of each building edit. Quote it with the rest.
+2. Rounded things (pumpkins, domes, snowmen, dolls, pots): `"round"` in the spec. A painted front on a strip:
+   `"rot": [0, 0, 180]` (the strip seam starts at the front). Trees: quad leaf cards (the default).
+3. Dry fold every asset for free before any paid image: the bare `template.png` as `texture.png` in a scratch copy,
+   `run_fold.py`, read the four views. Fix the shapes first.
+4. After the painting: `python3 $S/finish.py $A review/01`, then read `review/01/sheet.png` and fix by code what it
+   shows (`references/advanced.md`): little scenes painted inside faces, a feature on the wrong net, a bad roof slope.
+5. Report the quote and the real spend.
+
 ## Tools
 
 All in `scripts/`. Pure Python except `bp_fold.py`, `bp_thick.py`, `bp_unfold.py`, `blender_io.py` and `run_fold.py` (Blender).
@@ -32,6 +45,9 @@ All in `scripts/`. Pure Python except `bp_fold.py`, `bp_thick.py`, `bp_unfold.py
 | `bp_water.py` | spec `"water"`: disks and falling veils, uv scrolled in clip `Flow` (KHR_texture_transform + KHR_animation_pointer) |
 | `bp_look.py` | render look: warm key, cool fill, rim light, sky gradient, EEVEE ray traced AO and reflections |
 | `holes.py layout.json texture.png` | outlines of alpha holes in thick see-through nets, so they get rims too |
+| `finish.py A [review/NN]` | every step after the painting: clean, seam fade, water, maps, flat seams, painted card backgrounds keyed out, holes, fold, `warnings.json`, review `sheet.png` |
+| `bp_round.py` | spec `"round"`: welds, subdivides and rounds stacked frustums, ribs on the painted panels (run_fold calls it) |
+| `seamfade.py layout tex out --nets a,b [--flat]` | evens the paint across band seams, then (`--flat`) flattens the normal map there |
 | `run_fold.py -- A [review/NN]` | headless fold: `export/<name>.glb` (WEBP), `build/<name>.blend`, 4 review views, `export/<name>_fold.glb` |
 | `glb_check.py export/*.glb` | reads the GLB JSON: meshes, morph targets, clip names, image types |
 | `unfold.py layout.json` | fold animation math (hinge tree for boxes and cards, isometric roll for cones). Self check |
@@ -91,6 +107,8 @@ BLENDER=blender                                     # macOS: /Applications/Blend
    Water: `python3 $S/water.py $A` when the spec has `"water"`. Faces: one edit for every variant
    (`expressions.py sheet`, image edit, `expressions.py split`), then `run_fold.py` adds Blink and Talk.
 6. `$BLENDER --background --factory-startup --python $S/run_fold.py -- $A review/01`.
+   Steps 5 and 6 in one go: `BLENDER=$BLENDER python3 $S/finish.py $A review/01`, then read `review/01/sheet.png`.
+   Rounding, seams, fixes by code and the limits of normal maps: `references/advanced.md`.
 7. `python3 $S/glb_check.py $A/export/*.glb`, then look at `$A/review/01/front.png`, `left`, `back`, `right`.
 
 ## Prompts that worked

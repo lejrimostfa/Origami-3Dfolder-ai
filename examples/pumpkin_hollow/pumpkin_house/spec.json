@@ -1,0 +1,135 @@
+{
+ "name": "pumpkin_house",
+ "atlas_px": 1536,
+ "pad_px": 10,
+ "opaque": true,
+ "nets": {
+  "low": {
+   "type": "frustum",
+   "r0": 2.2,
+   "r1": 1.7600000000000002,
+   "h": 0.4,
+   "seg": 12,
+   "flip": true,
+   "cap": true
+  },
+  "belly": {
+   "type": "frustum",
+   "r0": 2.2,
+   "r1": 2.2,
+   "h": 2.2,
+   "seg": 12
+  },
+  "top": {
+   "type": "frustum",
+   "r0": 2.2,
+   "r1": 0.8800000000000001,
+   "h": 1.4,
+   "seg": 12,
+   "cap": true
+  },
+  "stem": {
+   "type": "frustum",
+   "r0": 0.34,
+   "r1": 0.24,
+   "h": 0.8,
+   "seg": 8,
+   "cap": true
+  },
+  "chimney": {
+   "type": "box",
+   "size": [
+    0.45,
+    0.45,
+    1.1
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back",
+    "top"
+   ]
+  },
+  "step": {
+   "type": "box",
+   "size": [
+    1.2,
+    0.5,
+    0.4
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back",
+    "top"
+   ]
+  }
+ },
+ "parts": [
+  {
+   "net": "low",
+   "at": [
+    0,
+    0,
+    0.4
+   ],
+   "rot": [
+    180,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "belly",
+   "at": [
+    0,
+    0,
+    0.4
+   ],
+   "rot": [
+    0,
+    0,
+    180
+   ]
+  },
+  {
+   "net": "top",
+   "at": [
+    0,
+    0,
+    2.6
+   ],
+   "rot": [
+    0,
+    0,
+    180
+   ]
+  },
+  {
+   "net": "stem",
+   "at": [
+    0,
+    0,
+    3.9
+   ]
+  },
+  {
+   "net": "chimney",
+   "at": [
+    1.1,
+    0.6,
+    3.2
+   ]
+  },
+  {
+   "net": "step",
+   "at": [
+    0,
+    -2.35,
+    0
+   ]
+  }
+ ]
+}

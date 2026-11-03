@@ -1,0 +1,26 @@
+{
+ "name": "hay_bale",
+ "atlas_px": 1024,
+ "pad_px": 10,
+ "opaque": true,
+ "nets": {
+  "bale": {
+   "type": "box",
+   "size": [
+    1.0,
+    0.6,
+    0.55
+   ]
+  }
+ },
+ "parts": [
+  {
+   "net": "bale",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "name": "candy_stall",
+ "atlas_px": 1536,
+ "pad_px": 10,
+ "opaque": true,
+ "nets": {
+  "counter": {
+   "type": "box",
+   "size": [
+    2.2,
+    0.9,
+    1.0
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back",
+    "top"
+   ]
+  },
+  "post": {
+   "type": "box",
+   "size": [
+    0.09,
+    0.09,
+    1.4
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back"
+   ]
+  },
+  "awning": {
+   "type": "box",
+   "size": [
+    2.6,
+    1.4,
+    0.08
+   ]
+  }
+ },
+ "parts": [
+  {
+   "net": "counter",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "post",
+   "at": [
+    -1.0,
+    0.35,
+    1.0
+   ]
+  },
+  {
+   "net": "post",
+   "at": [
+    1.0,
+    0.35,
+    1.0
+   ]
+  },
+  {
+   "net": "awning",
+   "at": [
+    0,
+    -0.05,
+    2.25
+   ],
+   "rot": [
+    -14,
+    0,
+    0
+   ]
+  }
+ ]
+}

@@ -1,0 +1,53 @@
+{
+ "name": "cauldron",
+ "atlas_px": 1024,
+ "pad_px": 10,
+ "opaque": true,
+ "nets": {
+  "low": {
+   "type": "frustum",
+   "r0": 0.5,
+   "r1": 0.32,
+   "h": 0.25,
+   "seg": 12,
+   "flip": true,
+   "cap": true
+  },
+  "pot": {
+   "type": "frustum",
+   "r0": 0.5,
+   "r1": 0.42,
+   "h": 0.38,
+   "seg": 12,
+   "cap": true
+  }
+ },
+ "parts": [
+  {
+   "net": "low",
+   "at": [
+    0,
+    0,
+    0.25
+   ],
+   "rot": [
+    180,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "pot",
+   "at": [
+    0,
+    0,
+    0.25
+   ],
+   "rot": [
+    0,
+    0,
+    180
+   ]
+  }
+ ]
+}

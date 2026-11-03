@@ -1,0 +1,26 @@
+{
+ "name": "scarecrow",
+ "atlas_px": 1024,
+ "pad_px": 10,
+ "opaque": false,
+ "nets": {
+  "cut": {
+   "type": "card",
+   "size": [
+    1.3,
+    1.9
+   ],
+   "thick": 0.012
+  }
+ },
+ "parts": [
+  {
+   "net": "cut",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

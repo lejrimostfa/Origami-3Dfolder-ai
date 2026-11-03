@@ -71,7 +71,7 @@ same texel density. Trees come from `tree.py`: a cone trunk, cone branches and l
 
 ## Examples
 
-`examples/` holds twelve finished assets. Each has its spec, prompt, layout, raw painting, cleaned texture and both
+`examples/` holds twelve finished assets, plus the twelve assets of the Pumpkin Hollow level in `pumpkin_hollow/`. Each has its spec, prompt, layout, raw painting, cleaned texture and both
 GLBs. Each image below shows the dieline sent to the painter, the painting that came back, and the folded object.
 
 Crate: one box, cross net.
@@ -102,6 +102,33 @@ Flintlock: the image model refused to paint a pistol dieline. So it painted a sh
 swatches instead (brass, walnut, steel), and `swatch.py` placed them on each piece by code. Stock and lock are
 extruded profiles, barrel, band and ramrod are cylinders, the trigger guard is a loop cut in a `thick` card.
 ![flintlock](docs/images/flintlock.png)
+
+## A whole level: Pumpkin Hollow
+
+![Pumpkin Hollow folding itself up](docs/pumpkin_hollow.gif)
+
+[Video with captions and stats](docs/pumpkin_hollow.mp4)
+
+A Halloween village made only of folded assets. 12 assets in `examples/pumpkin_hollow/`: pumpkin house, cottage,
+candy stall, cauldron, lamp post, jack-o'-lantern, scarecrow, hay bale, fence, signpost, gravestone, autumn tree.
+13 images in total (12 dielines and one leaf sheet), about $1.30, no 3D generation credit.
+
+The level places them 75 times along a dirt path. Every piece plays its own `Fold` clip, started later the further
+it stands along the path, so the village folds up in a wave. Lights switch on when their piece has folded.
+The layout, terrain and camera come from a separate scene tool that is not part of this repo.
+
+![Pumpkin Hollow](docs/images/pumpkin_hollow.jpg)
+
+Numbers for the level: 207k triangles, of which the 74 folded pieces are 2,688 (12 to 134 faces each). The rest is
+the 525 leaf cards per tree and the terrain grid. In Three.js on an Apple M1 Max: 120 FPS without post-processing,
+35 FPS with the full look. EEVEE renders a 1080p frame with ray tracing in 1.2 s.
+
+Lessons:
+- A cylinder strip starts its seam at the front (-Y). A door painted in the middle of the strip needs the part at
+  `"rot": [0, 0, 180]`.
+- The painter once put plain planks on the front slope of a gable roof. Copying the shingles from the back slope,
+  turned 90 degrees, fixed it without a new image (`cottage/texture.png`; `painted.png` is the raw output).
+- Cut-out cards (fence, scarecrow) score a low `iou_fit` by design: the check compares against the full card.
 
 ## No fold lines
 

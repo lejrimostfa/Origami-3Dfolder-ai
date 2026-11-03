@@ -1,0 +1,26 @@
+{
+ "name": "fence",
+ "atlas_px": 1024,
+ "pad_px": 10,
+ "opaque": false,
+ "nets": {
+  "cut": {
+   "type": "card",
+   "size": [
+    2.4,
+    1.0
+   ],
+   "thick": 0.03
+  }
+ },
+ "parts": [
+  {
+   "net": "cut",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

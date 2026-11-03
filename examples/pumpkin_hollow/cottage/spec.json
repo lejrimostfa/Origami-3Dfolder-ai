@@ -1,0 +1,88 @@
+{
+ "name": "cottage",
+ "atlas_px": 1536,
+ "pad_px": 10,
+ "opaque": true,
+ "nets": {
+  "walls": {
+   "type": "box",
+   "size": [
+    3.0,
+    2.4,
+    2.2
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back"
+   ]
+  },
+  "roof": {
+   "type": "extrude",
+   "length": 3.5,
+   "outline": [
+    [
+     -1.55,
+     0
+    ],
+    [
+     1.55,
+     0
+    ],
+    [
+     0,
+     1.6
+    ]
+   ],
+   "faces": [
+    "capL",
+    "capR",
+    "side0",
+    "side1",
+    "side2"
+   ]
+  },
+  "chimney": {
+   "type": "box",
+   "size": [
+    0.4,
+    0.4,
+    1.1
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back",
+    "top"
+   ]
+  }
+ },
+ "parts": [
+  {
+   "net": "walls",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "roof",
+   "at": [
+    0,
+    0,
+    2.2
+   ]
+  },
+  {
+   "net": "chimney",
+   "at": [
+    0.8,
+    0.6,
+    2.6
+   ]
+  }
+ ]
+}

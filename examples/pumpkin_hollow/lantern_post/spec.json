@@ -1,0 +1,69 @@
+{
+ "name": "lantern_post",
+ "atlas_px": 1024,
+ "pad_px": 10,
+ "opaque": true,
+ "nets": {
+  "post": {
+   "type": "box",
+   "size": [
+    0.12,
+    0.12,
+    2.0
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back"
+   ]
+  },
+  "lamp": {
+   "type": "box",
+   "size": [
+    0.32,
+    0.32,
+    0.42
+   ]
+  },
+  "cap": {
+   "type": "frustum",
+   "r0": 0.26,
+   "r1": 0.02,
+   "h": 0.22,
+   "seg": 4,
+   "cap": false
+  }
+ },
+ "parts": [
+  {
+   "net": "post",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "lamp",
+   "at": [
+    0,
+    0,
+    2.0
+   ]
+  },
+  {
+   "net": "cap",
+   "at": [
+    0,
+    0,
+    2.42
+   ],
+   "rot": [
+    0,
+    0,
+    45
+   ]
+  }
+ ]
+}

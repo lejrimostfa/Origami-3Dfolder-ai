@@ -1,0 +1,49 @@
+{
+ "name": "signpost",
+ "atlas_px": 1024,
+ "pad_px": 10,
+ "opaque": true,
+ "nets": {
+  "post": {
+   "type": "box",
+   "size": [
+    0.1,
+    0.1,
+    1.7
+   ],
+   "faces": [
+    "left",
+    "front",
+    "right",
+    "back",
+    "top"
+   ]
+  },
+  "board": {
+   "type": "box",
+   "size": [
+    1.0,
+    0.06,
+    0.36
+   ]
+  }
+ },
+ "parts": [
+  {
+   "net": "post",
+   "at": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "net": "board",
+   "at": [
+    0.25,
+    -0.08,
+    1.15
+   ]
+  }
+ ]
+}

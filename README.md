@@ -141,7 +141,7 @@ Each GIF flips between the result before and after one tool. Stills: the `.jpg` 
 | ![rounded shapes](docs/improvements/rounding.gif) | **Rounded shapes** (`bp_round.py`, spec `"round"`): stacked frustums welded, subdivided and given ribs on the painted panels. Same texture. |
 | ![band seams](docs/improvements/seams.gif) | **Invisible band seams** (`seamfade.py`): paint evened across each seam, normal map flattened there. |
 | ![relief and gloss](docs/improvements/relief.gif) | **Relief and gloss**: stronger normal maps, roughness per material from the texture, a raking light. |
-| ![cobbles](docs/improvements/cobbles.gif) | **Cobbled path**: smaller, brighter stones with their own normal map. |
+| ![setts](docs/improvements/cobbles.gif) | **Worn rectangular setts** (scene tool `setts.py`): irregular setts in running bond, chips, cracks, dirt and snow in the joints, colour, normal and AO from one height map. |
 | ![painter fixes](docs/improvements/painter_fixes.gif) | **Painter mistakes fixed by code** (`finish.py` and `references/advanced.md`): scenes inside snowballs, a face on the body, a painted background behind antlers. |
 | ![leaf cards](docs/improvements/leaves.gif) | **Leaf cards of 2 triangles** instead of about 7 (outline cards): a tree drops from 3,979 to 1,142 triangles, same look. |
 

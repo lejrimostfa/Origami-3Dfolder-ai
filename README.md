@@ -132,6 +132,28 @@ swatches instead (brass, walnut, steel), and `swatch.py` placed them on each pie
 extruded profiles, barrel, band and ramrod are cylinders, the trigger guard is a loop cut in a `thick` card.
 ![flintlock](docs/images/flintlock.png)
 
+## Improvements, before and after
+
+Each GIF flips between the result before and after one tool. Stills: the `.jpg` next to each GIF.
+
+| | |
+|---|---|
+| ![rounded shapes](docs/improvements/rounding.gif) | **Rounded shapes** (`bp_round.py`, spec `"round"`): stacked frustums welded, subdivided and given ribs on the painted panels. Same texture. |
+| ![band seams](docs/improvements/seams.gif) | **Invisible band seams** (`seamfade.py`): paint evened across each seam, normal map flattened there. |
+| ![relief and gloss](docs/improvements/relief.gif) | **Relief and gloss**: stronger normal maps, roughness per material from the texture, a raking light. |
+| ![cobbles](docs/improvements/cobbles.gif) | **Cobbled path**: smaller, brighter stones with their own normal map. |
+| ![painter fixes](docs/improvements/painter_fixes.gif) | **Painter mistakes fixed by code** (`finish.py` and `references/advanced.md`): scenes inside snowballs, a face on the body, a painted background behind antlers. |
+| ![leaf cards](docs/improvements/leaves.gif) | **Leaf cards of 2 triangles** instead of about 7 (outline cards): a tree drops from 3,979 to 1,142 triangles, same look. |
+
+![from one concept to a folded kremlin](docs/improvements/concept_to_kremlin.jpg)
+
+One concept painting set the proportions and the colours of the four fortress buildings.
+
+![frames per second](docs/improvements/fps_chart.png)
+
+Polygons were not the cost: 4x fewer triangles changed nothing. 25 point lights were. Those two fixes (a pool of 8
+lights, a pixel ratio cap) live in the scene tool, not in this repo.
+
 ## A whole level: Pumpkin Hollow
 
 ![Pumpkin Hollow folding itself up](docs/pumpkin_hollow.gif)

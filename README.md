@@ -159,6 +159,29 @@ Lessons:
   turned 90 degrees, fixed it without a new image (`cottage/texture.png`; `painted.png` is the raw output).
 - Cut-out cards (fence, scarecrow) score a low `iou_fit` by design: the check compares against the full card.
 
+## A second level: Gorod Zimy
+
+![Gorod Zimy folding itself up under the snow](docs/gorod_zimy.gif)
+
+[Video with captions and stats](docs/gorod_zimy.mp4)
+
+A Slavic winter town at New Year: a kremlin wall with swallowtail merlons, towers and a gate, an onion dome church,
+a carved terem, gingerbread houses, sweets kiosks, a New Year tree, a skating rink, Ded Moroz, Snegurochka,
+snowmen, a polar bear, reindeer, a troika and matryoshkas. 21 assets, 79 placements on a snow field.
+22 images in total (21 dielines and one concept), about $2.20, no 3D generation credit.
+
+The fortress started from one concept image of the whole ensemble, front elevation. Its proportions were measured
+on it (41 px per metre for a 5 m wall) and it was sent as the second image of each fortress edit, so the four
+buildings share the same bricks, trim, green spires and ruby stars. The onion dome, the snowmen and the dolls use
+`"round"`. The painter's mistakes (little village scenes inside snowballs, a face on the doll's body, a painted
+background behind the antlers) were all fixed by code, now in `finish.py` and `references/advanced.md`.
+
+![Gorod Zimy](docs/images/gorod_zimy.jpg)
+
+Numbers for the level: 39k triangles (terrain 20k, the 78 folded pieces 19k), 96 to 120 FPS in Three.js on an
+Apple M1 Max with the full look at max quality, 9,000 falling snowflakes in the Blender video. Its assets are not
+in `examples/` yet.
+
 ## No fold lines
 
 The painter tends to keep the dark fold lines of the template. `template.py clean` repaints a thin band along every
